@@ -1,24 +1,30 @@
-const bcrypt = require('bcryptjs') // 加入這行
+const bcrypt = require('bcryptjs')
 const db = require('../models')
 const { User } = db
 
-// 製作一個userController物件
 const userController = {
   signUpPage: (req, res) =>{
     res.render('signup')
   },
-  //加入下面這段
-  signUp: (req, res) =>{
-    // hash會回傳promise，所以後面可使用.then做非同步處理
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => User.create({
+  
+  signUp: (req, res, next) => { 
+    if (req.body.password !== req.body.passwordCheck) throw new Error('Passwords do not match!')
+
+    User.findOne({ where: { email: req.body.email } })
+      .then(user => {
+        if (user) throw new Error('Email already exists!')
+        return bcrypt.hash(req.body.password, 10) 
+      })
+      .then(hash => User.create({ 
       name: req.body.name,
       email: req.body.email,
       password: hash
     }))
     .then(() =>{
+      req.flash('success_messages', '成功註冊帳號！') 
       res.redirect('/signin')
     })
+    .catch(err => next(err)) 
   }
 }
 
