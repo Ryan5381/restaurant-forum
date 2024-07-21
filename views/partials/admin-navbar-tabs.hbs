@@ -1,0 +1,22 @@
+<h1>餐廳後台</h1>
+
+<a href='/admin/restaurants/create'>
+  <button type="button" class="btn btn-secondary">New Restaurant</button>
+</a>
+<br />
+<br />  
+
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {{#if (eq currentTab 'restaurants')}}active{{/if}}" 
+    style="color:black; {{#if (eq currentTab 'restaurants')}} background-color: rgb(53, 54, 55); color: white;{{/if}}" 
+    aria-current="page" 
+    href="/admin/restaurants">Restaurnat</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{#if (eq currentTab 'users')}}active{{/if}}" 
+    style="color:black; {{#if (eq currentTab 'users')}}background-color: rgb(53, 54, 55); color: white;{{/if}}" 
+    href="/admin/users">Users</a>
+  </li>
+</ul>
