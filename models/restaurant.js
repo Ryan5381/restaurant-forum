@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Restaurant.belongsTo(models.Category, { foreignKey: 'categoryId' }) // 增加這行
+      Restaurant.belongsTo(models.Category, { foreignKey: 'categoryId' }) 
+      Restaurant.hasMany(models.Comment, { foreignKey: 'restaurantId' })
     }
   };
   Restaurant.init({
@@ -20,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     openingHours: DataTypes.STRING,
     description: DataTypes.TEXT,
     image: DataTypes.STRING,
-    view_counts: DataTypes.INTEGER,
+    viewCounts: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Restaurant',
