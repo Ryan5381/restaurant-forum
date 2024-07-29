@@ -1,0 +1,26 @@
+<div class="mt-3 mb-5" style="display: flex; align-items: center; justify-content: center;">
+  <h3>User Profile</h3>
+</div>
+
+<div class="row mb-5" style="border: solid 0.5px #666;">
+
+  
+  <div class="col-md-6 mt-5" style="display: flex; align-items: center; justify-content: center;">
+    {{#if user.image}}
+    <img class="img-responsive center-block mb-5" src="{{user.image}}"
+      style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+    {{else}}
+      <img class="img-responsive center-block mb-5" src="https://fakeimg.pl/300/"
+        style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+    {{/if}}
+  </div>
+
+
+
+
+  <div class="col-md-4 mt-5" >
+    <p style="white-space: break-spaces;">name：{{user.name}}</p>
+    <p style="white-space: break-spaces;">email：{{user.email}}</p>
+    <a class="btn btn-link link-primary" href=" " >edit</a>
+  </div>
+</div>
