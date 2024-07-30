@@ -35,6 +35,7 @@ module.exports = {
       name: faker.name.findName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
+      image: `https://loremflickr.com/320/240/man,woman/?random=${Math.random() * 100}`,
       is_admin: false,
       created_at: new Date(),
       updated_at: new Date()

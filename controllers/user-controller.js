@@ -44,17 +44,16 @@ const userController = {
   },
 
   getUser: (req, res, next) => {
-    if (!req.user) throw new Error('User not logged in')
-    const currentUserId = req.user.id
     return User.findByPk(req.params.id, { 
-      include: 
-      [{
-        model: Comment,
-        include:[Restaurant]
-      }]
-      
-  })
+      include: [
+        {
+          model: Comment,
+          include:[Restaurant]
+        }
+      ]    
+    })
     .then(user => {
+      const currentUserId = user.id
       if (!user) throw new Error("User did'n exist")
       res.render('users/profile', {
         user: user.toJSON(),
@@ -63,6 +62,8 @@ const userController = {
     })
     .catch(err => next(err))
   },
+
+  
   editUser: (req, res, next) => {
     return User.findByPk(req.params.id, {
       raw: true,
@@ -79,7 +80,7 @@ const userController = {
     if (!name) throw new Error('User name is required!')
     const { file } = req
 
-    Promise.all([
+    return Promise.all([
       User.findByPk(req.params.id),
       localFileHandler(file) // 把檔案傳到 file-helper 處理
     ])

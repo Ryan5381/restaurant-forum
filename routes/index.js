@@ -26,6 +26,7 @@ router.get('/logout', userController.logout)
 router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 
 // restaurant
+router.get('/restaurants/feeds', authenticated, restController.getFeeds) // 新增這一行
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 router.get('/restaurants', authenticated, restController.getRestaurants)
 
