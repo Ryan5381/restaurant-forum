@@ -1,26 +1,42 @@
-<div class="mt-3 mb-5" style="display: flex; align-items: center; justify-content: center;">
+<div class="mt-3 mb-5" style="text-align: center;">
   <h3>User Profile</h3>
 </div>
 
-<div class="row mb-5" style="border: solid 0.5px #666;">
-
-  
-  <div class="col-md-6 mt-5" style="display: flex; align-items: center; justify-content: center;">
+<div class="row mb-3" style="border: solid 0.5px #d6d4d4; max-width: 900px; margin: auto;">
+  <div class="col-md-6 d-flex justify-content-center">
     {{#if user.image}}
-    <img class="img-responsive center-block mb-5" src="{{user.image}}"
-      style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+    <img class="img-responsive" src="{{user.image}}"
+      style="width: 100%; max-width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
     {{else}}
-      <img class="img-responsive center-block mb-5" src="https://fakeimg.pl/300/"
-        style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+    <img class="img-responsive" src="https://fakeimg.pl/300/"
+      style="width: 100%; max-width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
     {{/if}}
   </div>
 
-  <div class="col-md-4 mt-5" >
-    <p style="white-space: break-spaces;">name：{{user.name}}</p>
-    <p style="white-space: break-spaces;">email：{{user.email}}</p>
-    {{#if isCurrentUser}}
-    <a class="btn btn-secondary" href="/users/{{user.id}}/edit">edit</a>
-    {{/if}}
-    <a class="btn btn-outline-warning" href="javascript:history.back()">Back</a>
+  <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+    <div>
+      <p style="white-space: break-spaces;">name：{{user.name}}</p>
+      <p style="white-space: break-spaces;">email：{{user.email}}</p>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+      {{#if isCurrentUser}}
+      <a class="btn btn-secondary mx-2" href="/users/{{user.id}}/edit">edit</a>
+      {{/if}}
+      <a class="btn btn-outline-warning mx-2" href="javascript:history.back()">Back</a>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="max-width: 900px; margin: auto;">
+  <div class="card-header" style="padding-top: 1rem;" >
+    <h5 style="display: flex; align-items: center;">已評論的餐廳：</h5>
+  </div>
+
+  <div class="card-body d-flex" style="flex-wrap: wrap;">
+    {{#each user.Comments}}
+    <a href="/restaurants/{{this.Restaurant.id}}" class="btn" >
+      <img src="{{this.Restaurant.image}}" alt="{{this.Restaurant.name}}" style="max-width: 100px; ">
+    </a>
+    {{/each}}
   </div>
 </div>

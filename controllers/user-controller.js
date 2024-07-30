@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers') // 將 file-helper 載進來
-const { User } = db
+const { User, Comment, Restaurant} = db
 
 const userController = {
   signUpPage: (req, res) =>{
@@ -44,15 +44,20 @@ const userController = {
   },
 
   getUser: (req, res, next) => {
+    if (!req.user) throw new Error('User not logged in')
     const currentUserId = req.user.id
     return User.findByPk(req.params.id, { 
-      raw: true,
-      nest: true
+      include: 
+      [{
+        model: Comment,
+        include:[Restaurant]
+      }]
+      
   })
     .then(user => {
       if (!user) throw new Error("User did'n exist")
       res.render('users/profile', {
-        user,
+        user: user.toJSON(),
         isCurrentUser: user.id === currentUserId
     })
     })
