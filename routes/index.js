@@ -10,7 +10,8 @@ const userController = require('../controllers/user-controller')
 const commentController = require('../controllers/comment-controller')
 
 const { authenticated, authenticatedAdmin } = require('../middleware/auth')
-const { generalErrorHandler } = require('../middleware/error-handler') // 新增這行
+const { generalErrorHandler } = require('../middleware/error-handler') 
+const upload = require('../middleware/multer') // 載入 multer
 
 router.use('/admin', authenticatedAdmin, admin)
 
@@ -33,6 +34,8 @@ router.delete('/comments/:id', authenticatedAdmin, commentController.deleteComme
 router.post('/comments', authenticated, commentController.postComment)
 
 // user Profile
+router.put('/users/:id', upload.single('image'), authenticated, userController.putUser)
+router.get('/users/:id/edit', authenticated, userController.editUser)
 router.get('/users/:id', authenticated, userController.getUser)
 
 

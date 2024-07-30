@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
+const { localFileHandler } = require('../helpers/file-helpers') // 將 file-helper 載進來
 const { User } = db
 
 const userController = {
@@ -41,15 +42,55 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
+
   getUser: (req, res, next) => {
+    const currentUserId = req.user.id
     return User.findByPk(req.params.id, { 
       raw: true,
       nest: true
   })
-      .then(user => {
-        if (!user) throw new Error("User did'n exist")
-        res.render('users/profile', {user})
+    .then(user => {
+      if (!user) throw new Error("User did'n exist")
+      res.render('users/profile', {
+        user,
+        isCurrentUser: user.id === currentUserId
     })
+    })
+    .catch(err => next(err))
+  },
+  editUser: (req, res, next) => {
+    return User.findByPk(req.params.id, {
+      raw: true,
+      nest: true
+    })
+    .then(user => {
+      if (!user) throw new Error("User did'n exist")
+      res.render('users/edit', {user})
+    })
+    .catch(err => next(err))
+  },
+  putUser: (req, res, next) => {
+    const name  = req.body.name
+    if (!name) throw new Error('User name is required!')
+    const { file } = req
+
+    Promise.all([
+      User.findByPk(req.params.id),
+      localFileHandler(file) // 把檔案傳到 file-helper 處理
+    ])
+    
+    .then(([user, filePath]) =>{
+      if (!user) throw new Error("User did'n exist")
+      return user.update({ 
+        name,
+        image: filePath || user.image 
+      })
+    })
+    .then(() => {
+      req.flash('success_messages', '使用者資料編輯成功')
+      res.redirect(`/users/${req.params.id}`)
+    })
+    .catch(err => next(err))
   }
 }
 

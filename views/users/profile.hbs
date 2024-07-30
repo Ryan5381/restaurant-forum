@@ -15,12 +15,12 @@
     {{/if}}
   </div>
 
-
-
-
   <div class="col-md-4 mt-5" >
     <p style="white-space: break-spaces;">name：{{user.name}}</p>
     <p style="white-space: break-spaces;">email：{{user.email}}</p>
-    <a class="btn btn-link link-primary" href=" " >edit</a>
+    {{#if isCurrentUser}}
+    <a class="btn btn-secondary" href="/users/{{user.id}}/edit">edit</a>
+    {{/if}}
+    <a class="btn btn-outline-warning" href="javascript:history.back()">Back</a>
   </div>
 </div>
